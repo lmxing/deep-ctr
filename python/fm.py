@@ -78,7 +78,7 @@ def load_model(model_file):
             feature_index[feature] = i
     fi.close()
 
-from features import *
+#from features import *
 
 def rewrite_train_test(input_file, rewrite_file):
     namecol = {}
@@ -158,7 +158,11 @@ print 'reading feature index'
 fi = open(sys.argv[3], 'r')
 for line in fi:
     s = line.strip().split('\t')
-    index = int(s[1])
+    try:
+        index = int(s[1])
+    except Exception as e:
+        print s
+        print e
     feature_index[s[0]] = index
     index_feature[index] = s[0]
     max_feature_index = max(max_feature_index, index)

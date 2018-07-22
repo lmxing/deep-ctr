@@ -28,12 +28,12 @@ def log(msg,file=""):
 	with open(log_file+file+'.txt', "a+") as myfile:
 		myfile.write(msg+"\n")
 def logfile(msg,file):
-        print msg
+        print( msg)
         with open(log_path+file+'.txt', "a+") as myfile:
                 myfile.write(msg+"\n")
 def log_p(msg,file=""):
 	log(msg,file)
-	print msg
+	print (msg)
 
 def init_weight(hidden1,hidden2,acti_type):
 	v=rng.uniform(  low=-numpy.sqrt(6. / (hidden1 + hidden2)),
@@ -51,7 +51,7 @@ def init_weight(hidden1,hidden2,acti_type):
 #get all test set
 def get_all_data(file):
 	if (not os.path.isfile(file)):
-		print 'The file:' + str(file) + ' does not exist'
+		print ('The file:' + str(file) + ' does not exist')
 	else:
 		array=[]
 		arrayY=[]

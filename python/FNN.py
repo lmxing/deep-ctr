@@ -30,7 +30,7 @@ if len(sys.argv) > 2 and advertiser=='all':
     train_file=train_file+'.5.txt'
 elif len(sys.argv) > 2:
     train_file=train_file+'.10.txt'
-print train_file
+print(train_file)
 
 train_size=ut.file_len(train_file)                    #training size
 test_size=ut.file_len(test_file)                      #test size
@@ -271,7 +271,7 @@ def get_pred(file,best_w1,best_w2,best_w3,best_b1,best_b2,best_b3):
 	return pred
 
 # Train
-print "Training model:"
+print("Training model:")
 best_w1=w1.get_value()
 best_w2=w2.get_value()
 best_w3=w1.get_value()
@@ -284,7 +284,7 @@ times_reduce = 0
 for i in range(epoch):
     start_time = time.time()
     index = 1
-    for j in range(n_batch):
+    for j in range(int(n_batch)):
         if index>train_size:
             break
         f,x,y = get_batch_data(train_file,index,batch_size)
@@ -303,14 +303,14 @@ for i in range(epoch):
     train_time = time.time() - start_time
     mins = int(train_time / 60)
     secs = int(train_time % 60)
-    print 'training: ' + str(mins) + 'm ' + str(secs) + 's'
+    print('training: ' + str(mins) + 'm ' + str(secs) + 's')
 
     start_time = time.time()
     print_err(train_file,'\t\tTraining Err: \t' + str(i))# train error
     train_time = time.time() - start_time
     mins = int(train_time / 60)
     secs = int(train_time % 60)
-    print 'training error: ' + str(mins) + 'm ' + str(secs) + 's'
+    print('training error: ' + str(mins) + 'm ' + str(secs) + 's')
 
     start_time = time.time()
     auc, rmse = get_err_bat(test_file)
@@ -318,7 +318,7 @@ for i in range(epoch):
     mins = int(test_time / 60)
     secs = int(test_time % 60)
     log_p( 'Test Err:' + str(i) + '\t' + str(auc) + '\t' + str(rmse))
-    print 'test error: ' + str(mins) + 'm ' + str(secs) + 's'
+    print( 'test error: ' + str(mins) + 'm ' + str(secs) + 's')
 
     #stop training when no improvement for a while 
     if auc>min_err:
