@@ -286,8 +286,8 @@ class CDTrainer(object):
                 if batch.shape[0]<minibatch:
                     break
 
-            print "Done epoch %d: %f seconds, MSE=%f" % \
-                    (epoch + 1, time.clock() - epoch_start, mse)
+            print ("Done epoch %d: %f seconds, MSE=%f" % \
+                    (epoch + 1, time.clock() - epoch_start, mse))
             sys.stdout.flush()
 
 
@@ -503,8 +503,8 @@ class sparse_CDTrainer(object):
                         # Add to the total epoch estimate.
                         mse += vis.sum() / ncases
                         offset+=1
-            print "Done epoch %d: %f seconds, MSE=%f" % \
-                    (epoch + 1, time.clock() - epoch_start, mse)
+            print ("Done epoch %d: %f seconds, MSE=%f" % \
+                    (epoch + 1, time.clock() - epoch_start, mse))
             sys.stdout.flush()
             
 def get_rbm_weights(file, arr, ncases, fm_model_file,batch_size=1):
@@ -517,9 +517,9 @@ def get_rbm_weights(file, arr, ncases, fm_model_file,batch_size=1):
     index=0
     n_sparse_vis=32
     k=2
-    print "training RBM"
+    print ("training RBM")
     for line in arr:
-        print "line:",line
+        print ("line:%s"%line)
         index+=1
         if index==1:
             col=int(line)

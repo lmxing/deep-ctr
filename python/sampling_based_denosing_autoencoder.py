@@ -139,7 +139,7 @@ def da(row,col,file,results,learning_rate=0.1, training_epochs=15,
     # TRAINING #
     ############
     # go through training epochs
-    for epoch in xrange(training_epochs):
+    for epoch in range(training_epochs):
         # go through trainng set
         c = []
         batch=[]
@@ -226,7 +226,7 @@ def da(row,col,file,results,learning_rate=0.1, training_epochs=15,
                 indexes=[]
                 size=0
                 c.append(cost)
-        print 'Training epoch %d, cost ' % epoch, numpy.mean(c)
+        print ('Training epoch %d, cost ' % epoch, numpy.mean(c))
     end_time = timeit.default_timer()
     training_time = (end_time - start_time)
     return w,b
@@ -287,7 +287,7 @@ def sparse_da(row,col,file,learning_rate=0.1, training_epochs=15,
                     row,
                     dtype=theano.config.floatX
                 )
-    for epoch in xrange(training_epochs):
+    for epoch in range(training_epochs):
         # go through trainng set
         c = []
         batch=[]
@@ -339,7 +339,7 @@ def sparse_da(row,col,file,learning_rate=0.1, training_epochs=15,
                 batch=numpy.array(batch, dtype=numpy.float32)
                 [cost,z,w,b]=train_da(batch)
                 c.append(cost)
-        print 'Training epoch %d, cost ' % epoch, numpy.mean(c)
+        print ('Training epoch %d, cost ' % epoch, numpy.mean(c))
     end_time = timeit.default_timer()
     training_time = (end_time - start_time)
     return init_sparse_W,b

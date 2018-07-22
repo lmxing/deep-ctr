@@ -33,7 +33,7 @@ fm_model_file='../data/fm.model.txt'                   #fm model file           
 #feats = ut.feats_len(train_file)                                           #feature size
 
 
-print train_file
+print(train_file)
 train_size=ut.file_len(train_file)                    #training size
 test_size=ut.file_len(test_file)                      #test size
 n_batch=train_size/batch_size                                        #number of batches
@@ -228,7 +228,7 @@ def whole_auc_rmse(file):
     try:
         auc = roc_auc_score(yarray, yp)
     except:
-        print "error"
+        print("error")
     rmse = math.sqrt(mean_squared_error(yarray, yp))
     return auc,rmse
 def get_fi_h1_y(file,index,size):
@@ -266,7 +266,7 @@ def get_fi_h1_y(file,index,size):
 def mytrain():
     global bb0
     global ww1
-    print "Training model:"
+    print ("Training model:")
     min_err = 0
     min_err_epoch = 0
     times_reduce = 0
@@ -291,14 +291,14 @@ def mytrain():
         train_time = time.time() - start_time
         mins = int(train_time / 60)
         secs = int(train_time % 60)
-        print 'training: ' + str(mins) + 'm ' + str(secs) + 's'
+        print ('training: ' + str(mins) + 'm ' + str(secs) + 's')
 
         start_time = time.time()
         print_err(train_file,'\t\tTraining Err: \t' + str(i))# train error
         train_time = time.time() - start_time
         mins = int(train_time / 60)
         secs = int(train_time % 60)
-        print 'training error: ' + str(mins) + 'm ' + str(secs) + 's'
+        print ('training error: ' + str(mins) + 'm ' + str(secs) + 's')
 
         start_time = time.time()
         auc, rmse = auc_rmse(test_file)
@@ -306,7 +306,7 @@ def mytrain():
         mins = int(test_time / 60)
         secs = int(test_time % 60)
         log_p( 'Test Err:' + str(i) + '\t' + str(auc) + '\t' + str(rmse))
-        print 'test error: ' + str(mins) + 'm ' + str(secs) + 's'
+        print ('test error: ' + str(mins) + 'm ' + str(secs) + 's')
 
         #stop training when no improvement for a while 
         if auc>min_err:
