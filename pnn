@@ -1,0 +1,61 @@
+# 1.背景
+PNN，全称为Product-based Neural Network，认为在embedding输入到MLP之后学习的交叉特征表达并不充分，提出了一种product layer的思想，既基于乘法的运算来体现体征交叉的DNN网络结构。
+# 2.原理
+### 2.1 网络结构
+![](https://upload-images.jianshu.io/upload_images/1500965-0ea8f49863af0a23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+**输出层：**
+$y $ 是一个 (0,1)，用来预测点击率:
+$y = σ(W_3l_2 + b_3)$
+$W_3$ 是一个$1 * D_2$ 的一维向量；
+$b_3$ 是输出层的偏置；
+$l_2$ 是第二层隐藏层的输出结果;
+$\sigma(x) = \frac{1}{1+e^{-x}}$;
+$D_i$ 表示第$i$个隐藏层的维度;
+**隐藏层：**
+对于$l_2$
+$l_2 = relu(W_2l_1 + b_2)$
+$ relu(x) = max(0, x)$ 
+ is chosen as the activation function for hidden layer output since it has outstanding performance and efficient computation.
+ $l_1 ∈ R^{D_1}$ 第一个隐藏层的输出；
+对于$l_1$
+$l_1 = relu(l_z + l_p + b_1)$
+**product层**
+product layer可以分成两个部分：
+一部分是线性部分$l_z$；
+一部分是非线性部分$l_p$；
+![](https://upload-images.jianshu.io/upload_images/1500965-6fcd103c5157de13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+$W_z^n and W_p^n$are the weights in the product layer, and their shapes are determined by z and p respectively。
+看上面的公式，我们首先需要知道$z$和$p$，这都是由我们的embedding层得到的，其中$z$是线性信号向量，因此我们直接用embedding层得到。
+![](https://upload-images.jianshu.io/upload_images/1500965-9262eb06014836fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+$f_i ∈ R$  第 i field的 embedding 向量.
+$p_{i,j} = g(f_i,f_j) $ pair 特征的内积或者外积。
+**embedding layer**
+$f_i = W_{0i} x[start_i : end_i]$
+$x$ 是输出的特征，包括多个field；
+$x[start_i : end_i] $  是field x的 one-hot特征；
+$W_0$ 是embedding层的参数；
+**代价函数**
+![](https://upload-images.jianshu.io/upload_images/1500965-0885ec8d8443743b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 2.1 IPNN
+ Inner Product-based Neural Network ---> 内积 PNN
+定义：
+$g(f_i, f_j ) = &ltf_i,f_j &gt$
+$l_z^n = W_z^n o z = \sum_{i=1}^{N}\sum_{j=1}^{M}(W_z^n)_{i,j}z_{i,j}$
+$l_p^n = W_z^n o p = \sum_{i=1}^{N}\sum_{j=1}^{M}(W_p^n)_{i,j}p_{i,j}$
+可以看出$p, W_p^n$ 是对称矩阵。由于需要对任意两个pair进行内积，计算复杂度比较高。由于$W_p^n$ 是对称矩阵，可以进行分解。
+$W_p^n = θ_nθ_n^T$, $θ_n ∈ R^N $， 将这个等式带入上面，这里类似于FM中的分解。
+![](https://upload-images.jianshu.io/upload_images/1500965-6fd0e301d0409797.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](https://upload-images.jianshu.io/upload_images/1500965-fc1defd55e5e08d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](https://upload-images.jianshu.io/upload_images/1500965-9a1d473415e8f948.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+化简：
+![](https://upload-images.jianshu.io/upload_images/1500965-64ebde576520dcc0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 2.3 OPNN
+Outer Product-based Neural Network ---> 外积PNN
+定义
+$g(f_i,f_j) = f_if_j^T$
+此时$p_{ij}$为$M*M$的矩阵，计算一个$p_{ij}$的时间复杂度为$M*M$，而$p$是$N*N*M*M$的矩阵，因此计算p的事件复杂度为$N*N*M*M$。从而计算lp的时间复杂度变为$D1 * N*N*M*M$。这个显然代价很高的。为了减少复杂度，论文使用了叠加的思想，它重新定义了$p$矩阵：
+![](https://upload-images.jianshu.io/upload_images/1500965-493382ffe3fd6a04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+这里计算$p$的时间复杂度变为了$D1*M*(M+N)$
+
+# 3.源码
